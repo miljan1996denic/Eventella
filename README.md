@@ -17,3 +17,5 @@ insight into the technologies employed and current practices for building a secu
 event management system.
 
 Keywords: microservices, API Gateway, Keycloak, Eventella, FastAPI
+
+https://github.com/miljan1996denic/Eventella/blob/main/IMPLEMENTATION%20OF%20THE%20EVENT%20MANAGEMENT%20SYSTEM.pdf
