@@ -1,0 +1,450 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.6 (Debian 12.6-1.pgdg100+1)
+-- Dumped by pg_dump version 12.6 (Debian 12.6-1.pgdg100+1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: alembic_version; Type: TABLE; Schema: public; Owner: nsi
+--
+
+CREATE TABLE public.alembic_version (
+    version_num character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.alembic_version OWNER TO nsi;
+
+--
+-- Name: event; Type: TABLE; Schema: public; Owner: nsi
+--
+
+CREATE TABLE public.event (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    start_date timestamp without time zone NOT NULL,
+    end_date timestamp without time zone NOT NULL,
+    created_by integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    location_id integer
+);
+
+
+ALTER TABLE public.event OWNER TO nsi;
+
+--
+-- Name: event_id_seq; Type: SEQUENCE; Schema: public; Owner: nsi
+--
+
+CREATE SEQUENCE public.event_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.event_id_seq OWNER TO nsi;
+
+--
+-- Name: event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: nsi
+--
+
+ALTER SEQUENCE public.event_id_seq OWNED BY public.event.id;
+
+
+--
+-- Name: location; Type: TABLE; Schema: public; Owner: nsi
+--
+
+CREATE TABLE public.location (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    capacity integer,
+    rent_price numeric,
+    address character varying,
+    created_by integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.location OWNER TO nsi;
+
+--
+-- Name: location_id_seq; Type: SEQUENCE; Schema: public; Owner: nsi
+--
+
+CREATE SEQUENCE public.location_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.location_id_seq OWNER TO nsi;
+
+--
+-- Name: location_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: nsi
+--
+
+ALTER SEQUENCE public.location_id_seq OWNED BY public.location.id;
+
+
+--
+-- Name: resource; Type: TABLE; Schema: public; Owner: nsi
+--
+
+CREATE TABLE public.resource (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    type character varying NOT NULL,
+    quantity integer NOT NULL,
+    created_by integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    event_id integer
+);
+
+
+ALTER TABLE public.resource OWNER TO nsi;
+
+--
+-- Name: resource_id_seq; Type: SEQUENCE; Schema: public; Owner: nsi
+--
+
+CREATE SEQUENCE public.resource_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.resource_id_seq OWNER TO nsi;
+
+--
+-- Name: resource_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: nsi
+--
+
+ALTER SEQUENCE public.resource_id_seq OWNED BY public.resource.id;
+
+
+--
+-- Name: user; Type: TABLE; Schema: public; Owner: nsi
+--
+
+CREATE TABLE public."user" (
+    id integer NOT NULL,
+    username character varying,
+    email character varying NOT NULL,
+    hashed_password character varying NOT NULL
+);
+
+
+ALTER TABLE public."user" OWNER TO nsi;
+
+--
+-- Name: user_id_seq; Type: SEQUENCE; Schema: public; Owner: nsi
+--
+
+CREATE SEQUENCE public.user_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_id_seq OWNER TO nsi;
+
+--
+-- Name: user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: nsi
+--
+
+ALTER SEQUENCE public.user_id_seq OWNED BY public."user".id;
+
+
+--
+-- Name: event id; Type: DEFAULT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public.event ALTER COLUMN id SET DEFAULT nextval('public.event_id_seq'::regclass);
+
+
+--
+-- Name: location id; Type: DEFAULT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public.location ALTER COLUMN id SET DEFAULT nextval('public.location_id_seq'::regclass);
+
+
+--
+-- Name: resource id; Type: DEFAULT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public.resource ALTER COLUMN id SET DEFAULT nextval('public.resource_id_seq'::regclass);
+
+
+--
+-- Name: user id; Type: DEFAULT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public."user" ALTER COLUMN id SET DEFAULT nextval('public.user_id_seq'::regclass);
+
+
+--
+-- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: nsi
+--
+
+COPY public.alembic_version (version_num) FROM stdin;
+07db183469ec
+\.
+
+
+--
+-- Data for Name: event; Type: TABLE DATA; Schema: public; Owner: nsi
+--
+
+COPY public.event (id, name, description, start_date, end_date, created_by, created_at, updated_at, location_id) FROM stdin;
+38	event2-updated	string	2022-12-11 12:03:26.687	2022-12-11 12:03:26.687	2	2022-12-11 12:03:50.935192	2022-12-11 12:27:50.40669	2
+39	event3	string	2022-12-11 13:08:41.803	2022-12-11 13:08:41.803	2	2022-12-11 13:08:48.156826	\N	2
+40	event4	string	2022-12-11 13:08:41.803	2022-12-11 13:08:41.803	2	2022-12-11 13:08:58.175672	\N	2
+41	event5	string	2022-12-11 13:08:41.803	2022-12-11 13:08:41.803	2	2022-12-11 13:09:02.911985	\N	2
+42	eeedit	string	2022-12-21 21:17:05.796	2022-12-21 21:17:05.796	2	2022-12-21 21:16:33.357378	2022-12-21 21:17:44.243219	2
+43	Koncert Bajaga	Koncert proslave Nove Godine	2022-12-31 20:55:02.919	2023-01-01 01:55:02.919	2	2022-12-25 18:56:49.984925	\N	3
+\.
+
+
+--
+-- Data for Name: location; Type: TABLE DATA; Schema: public; Owner: nsi
+--
+
+COPY public.location (id, name, description, capacity, rent_price, address, created_by, created_at, updated_at) FROM stdin;
+2	location2 - edit	example	1000	22.0	tolstojkeva	2	2022-12-11 17:20:00.822057	2022-12-11 17:22:12.570776
+3	Hala Cair	Gradska hala	4000	2000.0	Radoja Domanovica	2	2022-12-25 18:56:36.79207	\N
+\.
+
+
+--
+-- Data for Name: resource; Type: TABLE DATA; Schema: public; Owner: nsi
+--
+
+COPY public.resource (id, name, description, type, quantity, created_by, created_at, updated_at, event_id) FROM stdin;
+2	edit	string	string	0	2	2022-12-21 21:08:30.056425	2022-12-21 21:10:38.069752	38
+\.
+
+
+--
+-- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: nsi
+--
+
+COPY public."user" (id, username, email, hashed_password) FROM stdin;
+1	test	miljan1996denic@gmail.com	$2b$12$Vgaa9s1MyjvJRlDhOlMeceD53HicaoOCQOJKv/QnA/YohMcfgAnwq
+2	miljan	miljan@gmail.com	$2b$12$cc4xD.yO3z/JjI86prL45e9uxh58huQ7PC/ZqHWf8IF7QAn91pL7W
+3	miljan2	miljan2@gmail.com	$2b$12$TTZiiTeZPXiUnS.NqISLmuZ0TVrt/ZQPrYbCflJNYd3yJ/cNBr0bW
+6	miljan3	miljan3@gmail.com	$2b$12$jxer6NqjKGYPG/RpAvBkLOVFf6V6HbDzdrcLG3QHe3py2C1D7Y/GW
+7	test1	string	$2b$12$talpzL4JDdqDWfQKKBDFk.eY70nBqoPYXyiyMnguFo6QhnErxP6cG
+\.
+
+
+--
+-- Name: event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: nsi
+--
+
+SELECT pg_catalog.setval('public.event_id_seq', 43, true);
+
+
+--
+-- Name: location_id_seq; Type: SEQUENCE SET; Schema: public; Owner: nsi
+--
+
+SELECT pg_catalog.setval('public.location_id_seq', 3, true);
+
+
+--
+-- Name: resource_id_seq; Type: SEQUENCE SET; Schema: public; Owner: nsi
+--
+
+SELECT pg_catalog.setval('public.resource_id_seq', 2, true);
+
+
+--
+-- Name: user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: nsi
+--
+
+SELECT pg_catalog.setval('public.user_id_seq', 7, true);
+
+
+--
+-- Name: alembic_version alembic_version_pkc; Type: CONSTRAINT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public.alembic_version
+    ADD CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num);
+
+
+--
+-- Name: event event_pkey; Type: CONSTRAINT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public.event
+    ADD CONSTRAINT event_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: location location_pkey; Type: CONSTRAINT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public.location
+    ADD CONSTRAINT location_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resource resource_pkey; Type: CONSTRAINT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public.resource
+    ADD CONSTRAINT resource_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public."user"
+    ADD CONSTRAINT user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ix_event_id; Type: INDEX; Schema: public; Owner: nsi
+--
+
+CREATE INDEX ix_event_id ON public.event USING btree (id);
+
+
+--
+-- Name: ix_event_name; Type: INDEX; Schema: public; Owner: nsi
+--
+
+CREATE UNIQUE INDEX ix_event_name ON public.event USING btree (name);
+
+
+--
+-- Name: ix_location_id; Type: INDEX; Schema: public; Owner: nsi
+--
+
+CREATE INDEX ix_location_id ON public.location USING btree (id);
+
+
+--
+-- Name: ix_location_name; Type: INDEX; Schema: public; Owner: nsi
+--
+
+CREATE INDEX ix_location_name ON public.location USING btree (name);
+
+
+--
+-- Name: ix_resource_id; Type: INDEX; Schema: public; Owner: nsi
+--
+
+CREATE INDEX ix_resource_id ON public.resource USING btree (id);
+
+
+--
+-- Name: ix_resource_name; Type: INDEX; Schema: public; Owner: nsi
+--
+
+CREATE INDEX ix_resource_name ON public.resource USING btree (name);
+
+
+--
+-- Name: ix_user_email; Type: INDEX; Schema: public; Owner: nsi
+--
+
+CREATE UNIQUE INDEX ix_user_email ON public."user" USING btree (email);
+
+
+--
+-- Name: ix_user_id; Type: INDEX; Schema: public; Owner: nsi
+--
+
+CREATE INDEX ix_user_id ON public."user" USING btree (id);
+
+
+--
+-- Name: ix_user_username; Type: INDEX; Schema: public; Owner: nsi
+--
+
+CREATE UNIQUE INDEX ix_user_username ON public."user" USING btree (username);
+
+
+--
+-- Name: event event_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public.event
+    ADD CONSTRAINT event_created_by_fkey FOREIGN KEY (created_by) REFERENCES public."user"(id) ON DELETE CASCADE;
+
+
+--
+-- Name: event event_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public.event
+    ADD CONSTRAINT event_location_id_fkey FOREIGN KEY (location_id) REFERENCES public.location(id) ON DELETE CASCADE;
+
+
+--
+-- Name: location location_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public.location
+    ADD CONSTRAINT location_created_by_fkey FOREIGN KEY (created_by) REFERENCES public."user"(id) ON DELETE CASCADE;
+
+
+--
+-- Name: resource resource_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public.resource
+    ADD CONSTRAINT resource_created_by_fkey FOREIGN KEY (created_by) REFERENCES public."user"(id) ON DELETE CASCADE;
+
+
+--
+-- Name: resource resource_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: nsi
+--
+
+ALTER TABLE ONLY public.resource
+    ADD CONSTRAINT resource_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.event(id) ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -1,0 +1,84 @@
+version: "3.9"
+
+x-postgres-environment: &postgres-environment
+  POSTGRES_USER: eventella
+  POSTGRES_DB: eventella
+  POSTGRES_PASSWORD: eventella
+  
+services:
+  eventella-keycloak:
+    image: quay.io/keycloak/keycloak:20.0.3
+    container_name: eventella-keycloak
+    ports:
+      - "8080:8080"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    command: "start-dev"
+
+  eventella-postgres:
+    image: postgres:15.2
+    container_name: eventella-postgres
+    mem_limit: 512m
+    ports:
+      - "5437:5432"
+    environment:
+      <<: *postgres-environment
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+
+  eventella-app:
+    mem_limit: 512m
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - "eventella-postgres"
+    env_file:
+      - ./app/.env.dev
+    container_name: eventella-app
+    ports:
+      - "5679:5678"
+      - "5007:80"
+    command: "app/bin/runserver_vsc.sh"
+    volumes:
+      - ./app:/app
+
+  eventella-gateway:
+    mem_limit: 512m
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    env_file:
+      - ./gateway/.env.dev
+    container_name: eventella-gateway
+    ports:
+      - "5680:5678"
+      - "5008:80"
+    command: "gateway/bin/runserver_vsc.sh"
+    volumes:
+      - ./gateway:/gateway
+
+  eventella-ticketing:
+    mem_limit: 512m
+    build:
+      context: .
+      dockerfile: Dockerfile.ticketing
+    env_file:
+      - ./ticketing/.env.dev
+    container_name: eventella-ticketing
+    ports:
+      - "5681:5678"
+      - "5009:80"
+    command: "ticketing/bin/runserver_vsc.sh"
+    volumes:
+      - ./ticketing:/ticketing
+
+  redis:
+    mem_limit: 512m
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data:/data
